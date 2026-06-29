@@ -1,0 +1,4 @@
+[build.environment]
+  # NEXT_PUBLIC_SUPABASE_ANON_KEY is a public client-side key by design (Supabase anon key).
+  # Next.js embeds all NEXT_PUBLIC_* vars into the bundle, so it will always appear in build output.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_ANON_KEY"
