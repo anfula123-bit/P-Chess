@@ -6,6 +6,7 @@ import { useGameStore } from '../../store/gameStore';
 import { useTimerStore } from '../../store/timerStore';
 import { newGame } from '../../engine/game';
 import { supabase } from '../../utils/supabase';
+// Supabase production integration trigger
 import styles from './home.module.css';
 
 interface MatchRecord {
