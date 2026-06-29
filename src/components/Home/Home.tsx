@@ -158,16 +158,15 @@ export default function Home({ onSettings }: HomeProps) {
     };
     useGameStore.setState({ gameState: freshGame });
 
-    // Attempt database insert (fails silently if tables do not exist yet)
-    try {
-      await supabase.from('matches').insert({
-        room_code: code,
-        white_commander: whiteComm,
-        timer_preset: timerPreset,
-        status: 'waiting'
-      });
-    } catch (e) {
-      console.warn('Database write bypassed:', e);
+    // Attempt database insert
+    const { error: insertError } = await supabase.from('matches').insert({
+      room_code: code,
+      white_commander: whiteComm,
+      timer_preset: timerPreset,
+      status: 'waiting'
+    });
+    if (insertError) {
+      console.error('Supabase DB Insert Error:', insertError);
     }
   };
 
@@ -182,14 +181,13 @@ export default function Home({ onSettings }: HomeProps) {
       isOnline: false
     });
 
-    // Attempt database update (fails silently if tables do not exist yet)
-    try {
-      await supabase.from('matches').update({
-        status: 'active',
-        black_commander: blackComm
-      }).eq('room_code', code);
-    } catch (e) {
-      console.warn('Database write bypassed:', e);
+    // Attempt database update
+    const { error: updateError } = await supabase.from('matches').update({
+      status: 'active',
+      black_commander: blackComm
+    }).eq('room_code', code);
+    if (updateError) {
+      console.error('Supabase DB Update Error:', updateError);
     }
 
     // Send JOIN request directly via Supabase Realtime Channel
