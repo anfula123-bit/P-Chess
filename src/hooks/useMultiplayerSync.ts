@@ -63,13 +63,15 @@ export function useMultiplayerSync() {
         const opponentBlackComm = payload.blackCommander || CommanderType.Valeria;
         const preset = useGameStore.getState().timerPreset;
 
-        setupOnlineMatch(
-          currentRoom!, 
-          Color.White, 
-          localWhiteComm, 
-          opponentBlackComm, 
-          preset
-        );
+        if (!currentOnline) {
+          setupOnlineMatch(
+            currentRoom!, 
+            Color.White, 
+            localWhiteComm, 
+            opponentBlackComm, 
+            preset
+          );
+        }
 
         // Notify Black that room is ready and send game settings
         channel.send({

@@ -194,25 +194,42 @@ export default function Home({ onSettings }: HomeProps) {
 
     // Send JOIN request directly via Supabase Realtime Channel
     const channel = supabase.channel(`room:${code}`);
+    
+    const sendJoin = () => {
+      channel.send({
+        type: 'broadcast',
+        event: 'JOIN',
+        payload: {
+          roomCode: code,
+          senderColor: Color.Black,
+          actionType: 'JOIN',
+          payload: {
+            blackCommander: blackComm
+          }
+        }
+      });
+    };
+
     channel.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
-        channel.send({
-          type: 'broadcast',
-          event: 'JOIN',
-          payload: {
-            roomCode: code,
-            senderColor: Color.Black,
-            actionType: 'JOIN',
-            payload: {
-              blackCommander: blackComm
-            }
-          }
-        });
+        sendJoin();
         
-        // Unsubscribe from this channel instance after a brief timeout so it doesn't leak
+        // Poll JOIN requests every 1.5 seconds
+        const interval = setInterval(() => {
+          const isOnlineNow = useGameStore.getState().isOnline;
+          if (isOnlineNow) {
+            clearInterval(interval);
+            channel.unsubscribe();
+          } else {
+            sendJoin();
+          }
+        }, 1500);
+
+        // Safety timeout to stop polling after 20 seconds if host doesn't respond
         setTimeout(() => {
+          clearInterval(interval);
           channel.unsubscribe();
-        }, 3000);
+        }, 20000);
       }
     });
   };
