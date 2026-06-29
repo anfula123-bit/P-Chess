@@ -96,6 +96,17 @@ export enum GameStatus {
   Resigned = 'resigned',
 }
 
+export enum CommanderType {
+  Vandoria = 'Vandoria',
+  Valeria = 'Valeria',
+}
+
+export interface CommanderPlayerState {
+  type: CommanderType | null;
+  energy: number;
+  skillUsedThisTurn: boolean;
+}
+
 export interface GameState {
   board: Board;
   activeColor: Color;
@@ -108,6 +119,14 @@ export interface GameState {
   positionHistory: string[]; // FEN position strings for threefold repetition
   capturedPieces: { white: Piece[]; black: Piece[] };
   zobristHash: number;
+  commanders: {
+    w: CommanderPlayerState;
+    b: CommanderPlayerState;
+  };
+  divineShieldSquare: Square | null;
+  slowedPieces: Square[];
+  doubleStepPiece: Square | null;
+  doubleStepMovesLeft: number;
 }
 
 export interface MoveRecord {

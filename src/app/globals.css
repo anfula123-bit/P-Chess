@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ============================================================
+   CSS Custom Properties — Design Tokens
+   ============================================================ */
+
+:root {
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Board Square Sizes */
+  --square-size: min(10vw, 72px);
+
+  /* Animation Speed (overridden by settings) */
+  --animation-speed: 200ms;
+}
+
+/* ============================================================
+   Dark Theme (Default)
+   ============================================================ */
+
+[data-theme='dark'] {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-tertiary: #1a1a28;
+  --bg-elevated: #22223a;
+  --bg-hover: #2a2a45;
+  --bg-active: #32325a;
+
+  --text-primary: #e8e8f0;
+  --text-secondary: #a0a0b8;
+  --text-tertiary: #686880;
+  --text-accent: #818cf8;
+
+  --border-primary: #2a2a40;
+  --border-secondary: #3a3a55;
+  --border-accent: #4f46e5;
+
+  --accent-primary: #6366f1;
+  --accent-secondary: #818cf8;
+  --accent-glow: rgba(99, 102, 241, 0.25);
+
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #60a5fa;
+
+  /* Board Colors */
+  --board-light: #b7c0d8;
+  --board-dark: #5d6b8a;
+  --board-selected: rgba(99, 102, 241, 0.5);
+  --board-legal-move: rgba(99, 102, 241, 0.35);
+  --board-legal-capture: rgba(239, 68, 68, 0.4);
+  --board-last-move: rgba(250, 204, 21, 0.3);
+  --board-check: rgba(239, 68, 68, 0.6);
+  --board-border: #1a1a2e;
+
+  --glass-bg: rgba(18, 18, 26, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================================
+   Light Theme
+   ============================================================ */
+
+[data-theme='light'] {
+  --bg-primary: #f5f5fa;
+  --bg-secondary: #eeeef5;
+  --bg-tertiary: #e5e5f0;
+  --bg-elevated: #ffffff;
+  --bg-hover: #dddde8;
+  --bg-active: #d0d0e0;
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a65;
+  --text-tertiary: #8a8aa0;
+  --text-accent: #4f46e5;
+
+  --border-primary: #d5d5e5;
+  --border-secondary: #c0c0d5;
+  --border-accent: #4f46e5;
+
+  --accent-primary: #4f46e5;
+  --accent-secondary: #6366f1;
+  --accent-glow: rgba(79, 70, 229, 0.15);
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+
+  /* Board Colors */
+  --board-light: #f0d9b5;
+  --board-dark: #b58863;
+  --board-selected: rgba(79, 70, 229, 0.45);
+  --board-legal-move: rgba(79, 70, 229, 0.3);
+  --board-legal-capture: rgba(220, 38, 38, 0.35);
+  --board-last-move: rgba(234, 179, 8, 0.35);
+  --board-check: rgba(220, 38, 38, 0.5);
+  --board-border: #8a7a6a;
+
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================================
+   Board Themes
+   ============================================================ */
+
+[data-board-theme='wood'] {
+  --board-light: #e8c99b;
+  --board-dark: #a67c52;
+}
+[data-board-theme='blue'] {
+  --board-light: #c8d8e8;
+  --board-dark: #5a7da8;
+}
+[data-board-theme='green'] {
+  --board-light: #eeeed2;
+  --board-dark: #769656;
+}
+[data-board-theme='purple'] {
+  --board-light: #d8ccec;
+  --board-dark: #7b5ea7;
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button {
+  font-family: var(--font-primary);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  color: inherit;
+}
+
+input, select, textarea {
+  font-family: var(--font-primary);
+  color: inherit;
+}
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ============================================================
+   Layout
+   ============================================================ */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.game-layout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.board-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 320px;
+  min-width: 280px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .game-layout {
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .panel-section {
+    width: 100%;
+    max-width: 580px;
+  }
+
+  :root {
+    --square-size: min(11.5vw, 64px);
+  }
+}
+
+@media (max-width: 500px) {
+  :root {
+    --square-size: min(12vw, 52px);
+  }
+}
+
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 50%, 90% { transform: translateX(-4px); }
+  30%, 70% { transform: translateX(4px); }
+}
+
+@keyframes capturedPieceIn {
+  from { opacity: 0; transform: scale(0) rotate(-180deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes checkGlow {
+  0%, 100% { box-shadow: inset 0 0 0 3px rgba(239, 68, 68, 0.6); }
+  50% { box-shadow: inset 0 0 0 3px rgba(239, 68, 68, 1), 0 0 20px rgba(239, 68, 68, 0.4); }
+}
+
+@keyframes moveHighlight {
+  from { background-color: var(--board-last-move); opacity: 0.8; }
+  to { background-color: var(--board-last-move); opacity: 0.5; }
+}
+
+@keyframes thinkingDots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
+
+@keyframes spinnerRotate {
+  to { transform: rotate(360deg); }
+}

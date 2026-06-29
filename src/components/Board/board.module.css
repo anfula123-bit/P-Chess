@@ -1,0 +1,288 @@
+/* ============================================================
+   Board Styles
+   ============================================================ */
+
+.boardContainer {
+  position: relative;
+  display: inline-block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 3px solid var(--board-border);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, var(--square-size));
+  grid-template-rows: repeat(8, var(--square-size));
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ============================================================
+   Square Styles
+   ============================================================ */
+
+.square {
+  position: relative;
+  width: var(--square-size);
+  height: var(--square-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  outline: none;
+}
+
+.square:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: -2px;
+  z-index: 2;
+}
+
+.light {
+  background-color: var(--board-light);
+}
+
+.dark {
+  background-color: var(--board-dark);
+}
+
+.selected {
+  background-color: var(--board-selected) !important;
+}
+
+.lastMoveFrom,
+.lastMoveTo {
+  background-color: var(--board-last-move) !important;
+}
+
+.check {
+  animation: checkGlow 1s ease-in-out infinite;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 0, 0, 0.5) 0%,
+    rgba(231, 0, 0, 0.3) 30%,
+    transparent 70%
+  ) !important;
+}
+
+/* ============================================================
+   Legal Move Indicators
+   ============================================================ */
+
+.legalMoveDot {
+  position: absolute;
+  width: 26%;
+  height: 26%;
+  background: var(--board-legal-move);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  transition: transform var(--transition-fast);
+}
+
+.square:hover .legalMoveDot {
+  transform: scale(1.3);
+}
+
+.legalCaptureRing {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border: 4px solid var(--board-legal-capture);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.square:hover .legalCaptureRing {
+  opacity: 1;
+}
+
+/* ============================================================
+   Piece
+   ============================================================ */
+
+.pieceWrapper {
+  position: relative;
+  z-index: 2;
+  width: 85%;
+  height: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast);
+  will-change: transform;
+}
+
+.pieceWrapper svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.3));
+}
+
+.square:hover .pieceWrapper {
+  transform: scale(1.06);
+}
+
+/* ============================================================
+   Labels
+   ============================================================ */
+
+.label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0.7;
+  line-height: 1;
+}
+
+.fileLabel {
+  bottom: 2px;
+  right: 3px;
+}
+
+.rankLabel {
+  top: 2px;
+  left: 3px;
+}
+
+.labelLight {
+  color: var(--board-light);
+}
+
+.labelDark {
+  color: var(--board-dark);
+}
+
+/* ============================================================
+   Thinking Indicator
+   ============================================================ */
+
+.thinkingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.thinkingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spinnerRotate 0.8s linear infinite;
+}
+
+/* ============================================================
+   Promotion Dialog (overlay on board)
+   ============================================================ */
+
+.promotionOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  border-radius: var(--radius-lg);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.promotionDialog {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-secondary);
+  animation: scaleIn 0.2s ease-out;
+}
+
+.promotionPiece {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: var(--bg-tertiary);
+  border: 2px solid transparent;
+}
+
+.promotionPiece:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-secondary);
+  transform: scale(1.1);
+}
+
+.promotionPiece svg {
+  width: 44px;
+  height: 44px;
+}
+
+/* ============================================================
+   Commander Board Overlays
+   ============================================================ */
+
+.shieldOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 4px solid var(--info);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 12px rgba(96, 165, 250, 0.4), 0 0 12px rgba(96, 165, 250, 0.6);
+  z-index: 3;
+  pointer-events: none;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.slowedOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(147, 197, 253, 0.18);
+  border: 3px dashed var(--info);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 8px rgba(147, 197, 253, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.doubleStepOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 4px solid var(--warning);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 12px rgba(251, 191, 36, 0.4), 0 0 12px rgba(251, 191, 36, 0.6);
+  z-index: 3;
+  pointer-events: none;
+}
